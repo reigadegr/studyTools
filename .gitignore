@@ -1,2 +1,5 @@
 */GB2312ToUTF8
 *.bak
+*/.vs
+*/out
+*/cmake-build*

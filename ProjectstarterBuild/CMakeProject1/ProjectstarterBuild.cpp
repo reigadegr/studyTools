@@ -52,7 +52,18 @@ static inline auto oncePrint() -> void
         "project");
     SPDLOG_INFO("\n");
 }
+static inline auto flutterStart() -> bool
+{
+    SPDLOG_INFO("Start to running flutter project.");
+    int result = system("flutter run");
+    // 检查命令是否成功执行
+    if (result != 0) {
+        SPDLOG_INFO("运行flutter项目时有问题");
+        return false;
+    }
 
+    return true;
+}
 static inline auto Determine() -> bool
 {
     if (fs::exists("pom.xml")) [[likely]] {
@@ -63,20 +74,16 @@ static inline auto Determine() -> bool
         vue_projectStart();
         return true;
     }
-    [[unlikely]] return false;
-}
-
-static inline auto scanFile(void) -> bool
-{
-    if ((!fs::exists("pom.xml")) && (!fs::exists("package.json")))
-        [[unlikely]] {
-        SPDLOG_INFO("Not found springboot and vue dependency file,");
-        SPDLOG_INFO("Please make sure you have location in target directory.");
-        SPDLOG_INFO("Press any keys to exit.");
-        std::cin.get();
-        return false;
+    if (fs::exists("pubspec.yaml")) [[likely]] {
+        flutterStart();
+        return true;
     }
-    return true;
+
+    SPDLOG_INFO("Not found springboot and vue dependency file,or flutter file");
+    SPDLOG_INFO("Please make sure you have location in target directory.");
+    SPDLOG_INFO("Press any keys to exit.");
+
+    return false;
 }
 
 std::string logFile;
@@ -102,9 +109,6 @@ auto main(int argc, char **argv) -> int
 #endif
     SPDLOG_INFO("启动开始...");
     oncePrint();
-    if (bool TrueDirectory = scanFile(); !TrueDirectory) {
-        return 2;
-    }
     Determine();
 
     SPDLOG_ERROR("Maybe has some error,please try again");
