@@ -1,0 +1,25 @@
+整数类型：
+INT 对应 Integer 或 int
+BIGINT 对应 Long 或 long
+SMALLINT 对应 Short 或 short
+TINYINT 对应 Byte 或 byte
+
+
+浮点数类型：
+FLOAT 对应 Float 或 float
+DOUBLE 对应 Double 或 double
+DECIMAL 对应 BigDecimal
+
+字符串类型：
+CHAR 对应 String
+VARCHAR 对应 String
+TEXT 对应 String
+
+日期时间类型：
+
+DATE 对应 java.sql.Date 或 java.time.LocalDate
+TIME 对应 java.sql.Time 或 java.time.LocalTime
+DATETIME 或 TIMESTAMP 对应 java.sql.Timestamp 或 java.time.LocalDateTime
+布尔类型：
+
+BOOLEAN 对应 Boolean 或 boolean
