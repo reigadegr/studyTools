@@ -32,14 +32,16 @@ const std::string yarn = "yarn.cmd";
 const std::string yarn = "yarn";
 #endif
 
-void killer();
+bool killer();
 
 auto springboot_projectStart() -> bool
 {
-    killer();
+    bool hasMainClass = killer();
     clearPath("target");
     SPDLOG_INFO("Please make sure you have installed maven.");
     system("mvn install");
-    system("mvn clean spring-boot:run");
+    if (hasMainClass) {
+        system("mvn clean spring-boot:run");
+    }
     return true;
 }

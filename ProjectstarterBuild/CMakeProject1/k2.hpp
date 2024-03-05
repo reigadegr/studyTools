@@ -79,6 +79,9 @@ std::string getFilePath(std::string projrct_root)
     std::regex regex(pattern);
 
     std::string NewfileName;
+    if (!(fs::exists(fileDirname) && fs::is_directory(fileDirname))) {
+        return "No such file or directory.";
+    }
     for (const auto &entry : fs::directory_iterator(fileDirname)) {
         std::string filename = entry.path().filename().string();
         if (std::regex_match(filename, regex)) {
@@ -90,22 +93,30 @@ std::string getFilePath(std::string projrct_root)
     return NewfileName;
 }
 
-void getPort(std::string &port)
+bool getPort(std::string &port)
 {
     // 获取端口
     fs::path currentPath = fs::current_path();
     std::string applicationFile = getFilePath(currentPath.string());
+    if (applicationFile == "No such file or directory.") {
+        return false;
+    }
     readfile(applicationFile, port);
+    return true;
 }
 
-void killer()
+bool killer()
 {
     std::string port = "";
-    getPort(port);
+    if (!getPort(port)) {
+        return false;
+    }
+#if defined(_WIN32)
     const std::string pid = execCmdSync(
         ("for /f \"skip=1 tokens=5\" %i in ('netstat -ano ^| findstr " + port +
          "') do @echo %i")
             .c_str());
+
     if (pid == "") {
         SPDLOG_INFO("端口未被占用\0");
     }
@@ -113,5 +124,6 @@ void killer()
         SPDLOG_INFO("开始杀进程: :{}\0", pid);
         system(("taskkill /F /PID " + pid).c_str());
     }
-    return;
+#endif
+    return true;
 }
