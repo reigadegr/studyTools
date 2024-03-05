@@ -39,6 +39,7 @@ auto springboot_projectStart() -> bool
     killer();
     clearPath("target");
     SPDLOG_INFO("Please make sure you have installed maven.");
-    system("mvn spring-boot:run");
+    system("mvn install");
+    system("mvn clean spring-boot:run");
     return true;
 }
