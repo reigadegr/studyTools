@@ -1,7 +1,8 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
-#include "vector"
+#include <vector>
 #include <string>
+#include <thread>
 
 class pathVariableMap {
 public:
@@ -33,20 +34,23 @@ bool readProfile(const char *input, std::vector<pathVariableMap> &myList) {
     return true;
 }
 
-int main(int argc, char **argv) {
-    if (argv[1] == nullptr) {
-        std::cout << "未输入命令行参数 即将退出\n";
-        std::cin.get();
-        return 0;
-    }
-    std::vector<pathVariableMap> myList;
-    readProfile(argv[1], myList);
+bool setPVMap(std::vector<pathVariableMap> &myList){
     for (const auto &tmp: myList) {
         std::cout << "键：" << tmp.path << "\n";
         std::cout << "值：" << tmp.variable << "\n";
         system(("setx " + tmp.path + " " + tmp.variable + " /m").c_str());
     }
-//    system("setx PATH \"%PATH%;D:\\flutter2\\bin\"");
     std::cout << "执行完毕\n";
-    std::cin.get();
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+}
+
+int main(int argc, char **argv) {
+    if (argv[1] == nullptr) {
+        std::cout << "未输入命令行参数 即将退出\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        return 0;
+    }
+    std::vector<pathVariableMap> myList;
+    readProfile(argv[1], myList);
+    setPVMap(myList);
 }
