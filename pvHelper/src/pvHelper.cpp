@@ -10,7 +10,7 @@ public:
     std::string variable;
 };
 
-bool readProfile(const char *input, std::vector<pathVariableMap> &myList) {
+bool readProfile(const char *input, std::vector <pathVariableMap> &myList) {
     std::ifstream file(input);
     std::string buf = "";
     std::string path = "", value = "";
@@ -34,7 +34,7 @@ bool readProfile(const char *input, std::vector<pathVariableMap> &myList) {
     return true;
 }
 
-bool setPVMap(std::vector<pathVariableMap> &myList){
+bool setPVMap(std::vector <pathVariableMap> &myList) {
     for (const auto &tmp: myList) {
         std::cout << "键：" << tmp.path << "\n";
         std::cout << "值：" << tmp.variable << "\n";
@@ -42,6 +42,7 @@ bool setPVMap(std::vector<pathVariableMap> &myList){
     }
     std::cout << "执行完毕\n";
     std::this_thread::sleep_for(std::chrono::seconds(10));
+    return true;
 }
 
 int main(int argc, char **argv) {
@@ -50,7 +51,7 @@ int main(int argc, char **argv) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1500));
         return 0;
     }
-    std::vector<pathVariableMap> myList;
+    std::vector <pathVariableMap> myList;
     readProfile(argv[1], myList);
     setPVMap(myList);
 }
