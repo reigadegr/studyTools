@@ -39,7 +39,7 @@ auto springboot_projectStart() -> bool
     bool hasMainClass = killer();
     clearPath("target");
     SPDLOG_INFO("Please make sure you have installed maven.");
-    system("mvn install");
+    system("mvn clean install");
     if (hasMainClass) {
         system("mvn clean spring-boot:run");
     }
